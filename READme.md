@@ -1,0 +1,1 @@
+This is a timer where you can set your custom time and it will remind you after that time to drink some water.

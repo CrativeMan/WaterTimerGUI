@@ -1,13 +1,18 @@
 import tkinter as tk
 from settings import *
 import customtkinter as ctk
+import function as func
 
 
 class WaterTimer(ctk.CTk):
     def __init__(self, title, size):
         super().__init__()
+        global time_int_var
         self.title(title)
         self.geometry(f"{size[0]}x{size[1]}")
+
+        # * data
+        self.time_int_var = time_int_var
 
         # * layout
         self.button_font = ("Arial", 20)
@@ -15,8 +20,8 @@ class WaterTimer(ctk.CTk):
         self.rowconfigure((0, 1, 2, 3), weight=1, uniform=1)
 
         # * widgets
-        TimerLabel(self).grid(row=0, rowspan=2, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"])
-        EntryFrame(self, self.button_font).grid(row=2, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"])
+        TimerLabel(self, self.time_int_var).grid(row=0, rowspan=2, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"])
+        EntryFrame(self, self.button_font, self.time_int_var).grid(row=2, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"])
         ControlFrame(self, self.button_font).grid(row=3, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"])
 
         # run the mainloop
@@ -24,10 +29,10 @@ class WaterTimer(ctk.CTk):
 
 
 class TimerLabel(ctk.CTkLabel):
-    def __init__(self, parent):
+    def __init__(self, parent, int_var):
         super().__init__(
             parent,
-            text="20:00",
+            textvariable=str(int_var),
             font=("Arial", 50),
             fg_color=COLORS["dark-grey"]["fg"],
             corner_radius=STYLING["CornerRadius"],
@@ -51,6 +56,7 @@ class EntryFrame(ctk.CTkFrame):
             text="20:00",
             font=font,
             fg_color=COLORS["dark-grey"]["fg"],
+            text_color=COLORS["dark-red"]["text"],
             corner_radius=STYLING["CornerRadius"],
         )
         self.time_label.grid(row=0, column=1, sticky="nsew", pady=10)
@@ -94,7 +100,7 @@ class ControlFrame(ctk.CTkFrame):
             fg_color=COLORS["dark-red"]["fg"],
             hover_color=COLORS["dark-red"]["hover"],
             corner_radius=STYLING["CornerRadius"],
-            command=lambda: print("start"),
+            command=lambda: func.StartTimer(),
         )
         self.start_butoon.grid(row=0, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"])
 
@@ -109,3 +115,4 @@ class ControlFrame(ctk.CTkFrame):
         self.stop_butoon.grid(row=0, column=1, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"])
 
 app = WaterTimer("Water Timer", (500, 500))
+time_int_var = tk.IntVar(value=0)

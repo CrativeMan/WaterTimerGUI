@@ -3,7 +3,6 @@ from settings import *
 import customtkinter as ctk
 
 
-# test
 class WaterTimer(ctk.CTk):
     def __init__(self, title, size):
         super().__init__()
@@ -11,39 +10,38 @@ class WaterTimer(ctk.CTk):
         self.geometry(f"{size[0]}x{size[1]}")
 
         # * layout
+        self.button_font = ("Arial", 20)
         self.columnconfigure(0, weight=1)
         self.rowconfigure((0, 1, 2, 3), weight=1, uniform=1)
 
         # * widgets
-        Buttons(self).grid(row=2, column=0, sticky="nsew", padx=10, pady=10)
-        TimerLabel(self).grid(
-            row=0, rowspan=2, column=0, sticky="nsew", padx=10, pady=10
-        )
+        TimerLabel(self).grid(row=0, rowspan=2, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"])
+        EntryFrame(self, self.button_font).grid(row=2, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"])
+        ControlFrame(self, self.button_font).grid(row=3, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"])
 
         # run the mainloop
         self.mainloop()
 
 
 class TimerLabel(ctk.CTkLabel):
-    def __init__(self, master):
+    def __init__(self, parent):
         super().__init__(
-            master,
+            parent,
             text="20:00",
             font=("Arial", 50),
             fg_color=COLORS["dark-grey"]["fg"],
             corner_radius=STYLING["CornerRadius"],
-            text_color=TEXT_COLORS["dark-red"],
+            text_color=COLORS["dark-red"]["text"],
         )
 
 
-class Buttons(ctk.CTkFrame):
-    def __init__(self, master):
-        super().__init__(master)
+class EntryFrame(ctk.CTkFrame):
+    def __init__(self, parent, font):
+        super().__init__(parent)
 
         # * layout
-        # TODO: Uniform 3 zu Uniform 2
         self.columnconfigure(0, weight=1, uniform=2)
-        self.columnconfigure(1, weight=2, uniform=3)
+        self.columnconfigure(1, weight=2, uniform=2)
         self.columnconfigure(2, weight=1, uniform=2)
         self.rowconfigure(0, weight=1, uniform=2)
 
@@ -51,7 +49,7 @@ class Buttons(ctk.CTkFrame):
         self.time_label = ctk.CTkLabel(
             self,
             text="20:00",
-            font=("Arial", 20),
+            font=font,
             fg_color=COLORS["dark-grey"]["fg"],
             corner_radius=STYLING["CornerRadius"],
         )
@@ -78,5 +76,36 @@ class Buttons(ctk.CTkFrame):
         )
         self.minus_button.grid(row=0, column=2, sticky="nsew", pady=10, padx=20)
 
+
+class ControlFrame(ctk.CTkFrame):
+    def __init__(self, parent, font):
+        super().__init__(parent)
+
+        # * layout
+        self.rowconfigure(0, weight=1)
+        self.columnconfigure(0, weight=3, uniform=3)
+        self.columnconfigure(0, weight=1, uniform=3)
+
+        # * buttons
+        self.start_butoon = ctk.CTkButton(
+            self, 
+            text="Start",
+            font=font,
+            fg_color=COLORS["dark-red"]["fg"],
+            hover_color=COLORS["dark-red"]["hover"],
+            corner_radius=STYLING["CornerRadius"],
+            command=lambda: print("start"),
+        )
+        self.start_butoon.grid(row=0, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"])
+
+        self.stop_butoon = ctk.CTkButton(
+            self, 
+            text="Stop",
+            font=font,
+            fg_color=COLORS["dark-red"]["fg"],
+            hover_color=COLORS["dark-red"]["hover"],
+            corner_radius=STYLING["CornerRadius"],
+            command=lambda: print("stop"),)
+        self.stop_butoon.grid(row=0, column=1, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"])
 
 app = WaterTimer("Water Timer", (500, 500))

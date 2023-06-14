@@ -41,6 +41,7 @@ class Buttons(ctk.CTkFrame):
         super().__init__(master)
 
         # * layout
+        #TODO: 1 zu 2
         self.columnconfigure(0, weight=1, uniform=2)
         self.columnconfigure(1, weight=2, uniform=3)
         self.columnconfigure(2, weight=1, uniform=2)

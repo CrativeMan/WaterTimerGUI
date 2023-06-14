@@ -5,6 +5,9 @@ COLORS = {
 
 STYLING = {
     "CornerRadius": 10,
+    "Gap": 8
 }
 
-TEXT_COLORS = {"dark-red": "#880b0b"}
+TEXT_COLORS = {
+     "dark-red": "#880b0b"
+}

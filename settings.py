@@ -8,3 +8,11 @@ STYLING = {
     "CornerRadius": 10,
     "Gap": 8
 }
+
+FONT = {
+    "timer-font": {
+        "family": "Helvetica",
+        "size": 40,
+        "weight": "bold",
+    }
+}

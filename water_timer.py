@@ -1,7 +1,7 @@
 import tkinter as tk
 from settings import *
 import customtkinter as ctk
-from testtesttest import *
+from water_calc_functions import *
 
 
 class WaterTimer(ctk.CTk):

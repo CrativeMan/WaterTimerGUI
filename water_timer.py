@@ -1,6 +1,7 @@
 import tkinter as tk
 from settings import *
 import customtkinter as ctk
+from testtesttest import *
 
 
 class WaterTimer(ctk.CTk):
@@ -23,13 +24,24 @@ class WaterTimer(ctk.CTk):
         self.rowconfigure((0, 1, 2, 3), weight=1, uniform=1)
 
         # * widgets
-        TimerLabel(self, self.time_text_var).grid(row=0, rowspan=2, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"])
-        EntryFrame(self, self.button_font, self.time_int_var, self.time_text_var).grid(row=2, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"])
-        ControlFrame(self, self.button_font, self.running).grid(row=3, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"])
+        TimerLabel(self, self.time_text_var).grid(
+            row=0,
+            rowspan=2,
+            column=0,
+            sticky="nsew",
+            padx=STYLING["Gap"],
+            pady=STYLING["Gap"],
+        )
+        EntryFrame(self, self.button_font, self.time_int_var, self.time_text_var).grid(
+            row=2, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"]
+        )
+        ControlFrame(self, self.button_font, self.running).grid(
+            row=3, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"]
+        )
 
         # run the mainloop
         self.mainloop()
-    
+
     def update_time_text(self, *args):
         self.time_text_var.set(f"{self.time_int_var.get()}:00")
 
@@ -90,7 +102,7 @@ class EntryFrame(ctk.CTkFrame):
         )
         self.minus_button.grid(row=0, column=2, sticky="nsew", pady=10, padx=20)
 
-    def add_time(self, int_var):        
+    def add_time(self, int_var):
         int_var.set(int_var.get() + 1)
         print(int_var.get())
 
@@ -114,7 +126,7 @@ class ControlFrame(ctk.CTkFrame):
 
         # * buttons
         self.start_butoon = ctk.CTkButton(
-            self, 
+            self,
             text="Start",
             font=font,
             fg_color=COLORS["dark-red"]["fg"],
@@ -122,22 +134,28 @@ class ControlFrame(ctk.CTkFrame):
             corner_radius=STYLING["CornerRadius"],
             command=lambda: self.start_countdown(running),
         )
-        self.start_butoon.grid(row=0, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"])
+        self.start_butoon.grid(
+            row=0, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"]
+        )
 
         self.stop_butoon = ctk.CTkButton(
-            self, 
+            self,
             text="Stop",
             font=font,
             fg_color=COLORS["dark-red"]["fg"],
             hover_color=COLORS["dark-red"]["hover"],
             corner_radius=STYLING["CornerRadius"],
-            command=lambda: print("stop"),)
-        self.stop_butoon.grid(row=0, column=1, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"])
+            command=lambda: print("stop"),
+        )
+        self.stop_butoon.grid(
+            row=0, column=1, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"]
+        )
 
     # * functions
     def start_countdown(self, running):
         if running:
             print("Timer already running")
+            StartCountDown()
         else:
             print("Timer started")
             running = True

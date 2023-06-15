@@ -14,5 +14,10 @@ FONT = {
         "family": "Helvetica",
         "size": 40,
         "weight": "bold",
+    },
+    "main-font": {
+        "family": "Helvetica",
+        "size": 20,
+        "weight": "bold",
     }
 }

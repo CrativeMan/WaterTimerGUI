@@ -155,7 +155,6 @@ class ControlFrame(ctk.CTkFrame):
     # * functions
     def start_countdown(self, running):
         if running:
-            print("Timer already running")
             StartCountDown()
             self.start_button.configure(state="disabled")
         else:

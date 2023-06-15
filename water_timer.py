@@ -125,20 +125,21 @@ class ControlFrame(ctk.CTkFrame):
         self.columnconfigure(0, weight=1, uniform=3)
 
         # * buttons
-        self.start_butoon = ctk.CTkButton(
+        self.start_button = ctk.CTkButton(
             self,
             text="Start",
             font=font,
             fg_color=COLORS["dark-red"]["fg"],
             hover_color=COLORS["dark-red"]["hover"],
+            text_color_disabled=COLORS["dark-red"]["disabled"],
             corner_radius=STYLING["CornerRadius"],
             command=lambda: self.start_countdown(running),
         )
-        self.start_butoon.grid(
+        self.start_button.grid(
             row=0, column=0, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"]
         )
 
-        self.stop_butoon = ctk.CTkButton(
+        self.stop_button = ctk.CTkButton(
             self,
             text="Stop",
             font=font,
@@ -147,7 +148,7 @@ class ControlFrame(ctk.CTkFrame):
             corner_radius=STYLING["CornerRadius"],
             command=lambda: print("stop"),
         )
-        self.stop_butoon.grid(
+        self.stop_button.grid(
             row=0, column=1, sticky="nsew", padx=STYLING["Gap"], pady=STYLING["Gap"]
         )
 
@@ -156,6 +157,7 @@ class ControlFrame(ctk.CTkFrame):
         if running:
             print("Timer already running")
             StartCountDown()
+            self.start_button.configure(state="disabled")
         else:
             print("Timer started")
             running = True

@@ -1,8 +1,8 @@
 import customtkinter as ctk
 from settings import *
-import time
+import time as t
 import sys
-
+import playsound as ps
 
 class WaterTimer(ctk.CTk):
     def __init__(self, title, size):
@@ -54,7 +54,7 @@ class Widgets(ctk.CTkFrame):
         # timer label
         self.timer_label = ctk.CTkLabel(
             self,
-            text="00:00:00",
+            text="00:00",
             fg_color=COLORS["dark-grey"]["fg"],
             font=timer_font,
             corner_radius=STYLING["CornerRadius"],
@@ -159,29 +159,73 @@ class Widgets(ctk.CTkFrame):
         )
 
     def start_countdown(self):
-        if self.running == False:
+        if self.time > 0 and self.running == False:
             self.running = True
-            self.timer_label.configure(text=time.strftime("%H:%M:%S"))
+            if self.time < 10:
+                self.timer_label.configure(text=f"0{self.time}:00")
+            else:
+                self.timer_label.configure(text=f"{self.time}:00")
             self.start_button.configure(state=ctk.DISABLED)
+            self.add_time_button.configure(state=ctk.DISABLED)
+            self.subtract_time_button.configure(state=ctk.DISABLED)
+            self.countdown()
         
     def stop_countdown_quit(self):
         if self.running == True:
             self.running = False
             self.timer_label.configure(text="00:00")
+            self.start_button.configure(text="Start")
             self.start_button.configure(state=ctk.NORMAL)
+            self.add_time_button.configure(state=ctk.NORMAL)
+            self.subtract_time_button.configure(state=ctk.NORMAL)
         else:
             sys.exit()
 
     def add_time(self):
         if self.time < 60:
             self.time += 1
-            self.timer_label.configure(text=f"{self.time}:00")
-            self.add_subtract_time_label.configure(text=f"{self.time}:00")
+            if self.time < 10:
+                self.add_subtract_time_label.configure(text=f"0{self.time}:00")
+            else:
+                self.add_subtract_time_label.configure(text=f"{self.time}:00")
 
     def subtract_time(self):
         if self.time > 0:
             self.time -= 1  
-            self.timer_label.configure(text=f"{self.time}:00")
-            self.add_subtract_time_label.configure(text=f"{self.time}:00")
+            if self.time < 10:
+                self.add_subtract_time_label.configure(text=f"0{self.time}:00")
+            else:
+                self.add_subtract_time_label.configure(text=f"{self.time}:00")
+
+    def countdown(self):
+        try:
+            temp = self.time * 60
+        except:
+            print("Please input the right value")
+        
+        while temp > -1 and self.running == True:
+            mins, secs = divmod(temp, 60)
+
+            if mins < 10 and secs < 10:
+                self.timer_label.configure(text=f"0{mins}:0{secs}")
+            elif mins < 10 and secs >= 10:
+                self.timer_label.configure(text=f"0{mins}:{secs}")
+            elif mins >= 10 and secs < 10:
+                self.timer_label.configure(text=f"{mins}:0{secs}")
+            else:
+                self.timer_label.configure(text=f"{mins}:{secs}")
+
+            self.update()
+            t.sleep(1)
+
+            if (temp == 0):
+                ps.playsound("./sounds/attention.mp3")
+                self.timer_label.configure(text="00:00")
+                self.start_button.configure(text="Continue")
+                self.running = False
+                self.start_button.configure(state=ctk.NORMAL)
+                self.add_time_button.configure(state=ctk.NORMAL)
+                self.subtract_time_button.configure(state=ctk.NORMAL)
+            temp -= 1
 
 water_timer = WaterTimer("Water timer", (500,500))

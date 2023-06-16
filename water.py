@@ -1,6 +1,8 @@
 import customtkinter as ctk
 from settings import *
 import time
+import sys
+
 
 class WaterTimer(ctk.CTk):
     def __init__(self, title, size):
@@ -21,23 +23,32 @@ class WaterTimer(ctk.CTk):
             FONT["main-font"]["weight"],
         )
 
+        # * data
+        self.running = False
+        self.time = 0
 
         # * widgets
         Widgets(
             parent=self, 
             timer_font=self.timer_font,
             main_font=self.main_font,
+            running=self.running,
+            time=self.time,
         ).pack(expand=True, fill=ctk.BOTH)
 
         # * run
         self.mainloop()
 
 class Widgets(ctk.CTkFrame):
-    def __init__(self, parent, timer_font, main_font):
+    def __init__(self, parent, timer_font, main_font, running, time):
         super().__init__(parent)
         # * layout
         self.rowconfigure((0,1,2,3),  weight=1, uniform=1)
         self.columnconfigure((0,1,2), weight=1, uniform=1)
+
+        # * data
+        self.running = running
+        self.time = time
 
         # * widgets
         # timer label
@@ -61,7 +72,7 @@ class Widgets(ctk.CTkFrame):
         # add/subtract time label
         self.add_subtract_time_label = ctk.CTkLabel(
             self,
-            text="00:00:00",
+            text="00:00",
             fg_color=COLORS["dark-grey"]["fg"],
             font=main_font,
             corner_radius=STYLING["CornerRadius"],
@@ -81,6 +92,8 @@ class Widgets(ctk.CTkFrame):
             fg_color=COLORS["orange"]["fg"],
             hover_color=COLORS["orange"]["hover"],
             font=main_font,
+            corner_radius=STYLING["CornerRadius"],
+            command=lambda: self.add_time(),
         )
         self.add_time_button.grid(
             row=2, 
@@ -98,6 +111,7 @@ class Widgets(ctk.CTkFrame):
             hover_color=COLORS["orange"]["hover"],
             font=main_font,
             corner_radius=STYLING["CornerRadius"],
+            command=lambda: self.subtract_time(),
         )
         self.subtract_time_button.grid(
             row=2,
@@ -115,6 +129,7 @@ class Widgets(ctk.CTkFrame):
             hover_color=COLORS["orange"]["hover"],
             font=main_font,
             corner_radius=STYLING["CornerRadius"],
+            command=lambda: self.start_countdown(),
         )
         self.start_button.grid(
             row=3,
@@ -128,11 +143,12 @@ class Widgets(ctk.CTkFrame):
         # stop button
         self.stop_button = ctk.CTkButton(
             self,
-            text="Stop",
+            text="Stop/Quit",
             fg_color=COLORS["orange"]["fg"],
             hover_color=COLORS["orange"]["hover"],
             font=main_font,
             corner_radius=STYLING["CornerRadius"],
+            command=lambda: self.stop_countdown_quit(),
         )
         self.stop_button.grid(
             row=3,
@@ -141,5 +157,31 @@ class Widgets(ctk.CTkFrame):
             padx=STYLING["Gap"],
             pady=STYLING["Gap"],
         )
+
+    def start_countdown(self):
+        if self.running == False:
+            self.running = True
+            self.timer_label.configure(text=time.strftime("%H:%M:%S"))
+            self.start_button.configure(state=ctk.DISABLED)
+        
+    def stop_countdown_quit(self):
+        if self.running == True:
+            self.running = False
+            self.timer_label.configure(text="00:00")
+            self.start_button.configure(state=ctk.NORMAL)
+        else:
+            sys.exit()
+
+    def add_time(self):
+        if self.time < 60:
+            self.time += 1
+            self.timer_label.configure(text=f"{self.time}:00")
+            self.add_subtract_time_label.configure(text=f"{self.time}:00")
+
+    def subtract_time(self):
+        if self.time > 0:
+            self.time -= 1  
+            self.timer_label.configure(text=f"{self.time}:00")
+            self.add_subtract_time_label.configure(text=f"{self.time}:00")
 
 water_timer = WaterTimer("Water timer", (500,500))
